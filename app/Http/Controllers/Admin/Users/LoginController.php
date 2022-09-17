@@ -27,16 +27,17 @@ class LoginController extends Controller
     public function store(Request $request) {
         $this->validate($request, [
             'email' => 'required|email:filter',
-            'password' => 'required'
+            'password' => 'required',
+        
         ]);
-
-        if (Auth::attempt(['email' => $request->input('email'),'password' => $request->input('password'),], 
-            $request->input('remember'))) {
-            $request->session()->flash('status', 'Task was successful!');
-            
+     
+        if (Auth::attempt(['email' => $request->input('email'),
+            'password' => $request->input('password')], $request->input('remember'))) {
+                
             return redirect()->route('admin');
         }
         
+        $request->session()->flash('error', 'Email hoac password khong dung!');
         return redirect()->back();
     }
 }
